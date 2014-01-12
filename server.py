@@ -6,6 +6,7 @@ urls = (
 	'/loop', 'loop',
 	'/alloff', 'alloff',
 	'/allon', 'allon'
+	'/toggle', 'toggle'
 )
 
 class index:
@@ -23,6 +24,10 @@ class alloff:
 class allon:
 	def GET(self):
 		lightcontroller.setAllOn()
+
+class toggle:
+	def GET(self):
+		lightcontroller.toggleLights()
 		
 if __name__ == "__main__":
     app = web.application(urls, globals())
