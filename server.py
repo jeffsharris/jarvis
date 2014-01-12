@@ -5,7 +5,7 @@ urls = (
 	'/', 'index',
 	'/loop', 'loop',
 	'/alloff', 'alloff',
-	'/allon', 'allon'
+	'/allon', 'allon',
 	'/toggle', 'toggle'
 )
 
