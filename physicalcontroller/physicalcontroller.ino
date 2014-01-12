@@ -23,26 +23,24 @@ void setup() {
 void loop() {
   // read the state of the pushbutton value:
   buttonState = digitalRead(buttonPin);
+  // read the state of the analog value
   analogValue = analogRead(A1);
-  Serial.print(analogValue);
-  delay(1000);
-  /*if (analogValue != lastAnalogValue) {
-    Serial.print("Setting brightness to " + analogValue);
-    HttpClient client;
+  HttpClient client;
+  if (abs(analogValue - lastAnalogValue) > 10) {
     digitalWrite(ledPin, HIGH);
-    lastAnalogValue = analogValue;
     brightness = map(analogValue, 0, 1023, 0, 255);
-    client.get("http://0.0.0.0:8080/allbrightness/" + brightness);
+    Serial.print(brightness);
+    client.get("http://10.1.10.20:8080/allbrightness/" + String(brightness));
+    client.get("http://10.1.10.20:8080/toggle");
+    lastAnalogValue = analogValue;
     digitalWrite(ledPin, LOW);
-    delay(1000);
-  }*/
+  }
   
   // check if the pushbutton is pressed.
   // if it is, the buttonState is HIGH:
   if (buttonState == HIGH && lastButtonState == LOW) {
     // turn LED on:
     digitalWrite(ledPin, HIGH);
-    HttpClient client;
     client.get("http://10.1.10.20:8080/toggle");
     lastButtonState == HIGH;
   }
