@@ -54,10 +54,11 @@ void loop() {
     // turn LED on:
     digitalWrite(ledPin, HIGH);
     HttpClient client;
-    client.get("http://10.1.10.20:8080/allon");
+    client.get("http://10.1.10.20:8080/toggle");
+    lastButtonState == HIGH;
   }
-  else {
-    // turn LED off:
+  else if (buttonState == LOW) {
+    lastButtonState == LOW;
     digitalWrite(ledPin, LOW);
   }
 }

@@ -79,9 +79,9 @@ def setOn(num):
 	
 def toggleLights():
 	if len(getOnLights()) > 0:
-		setAllOn()
-	else:
 		setAllOff()
+	else:
+		setAllOn()
 
 		
 def loopAllOnLights():
