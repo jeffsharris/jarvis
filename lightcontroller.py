@@ -50,6 +50,10 @@ def setBrightness(num, brightness):
 		applyStateToLight(num, {"bri":brightness})
 		return True
 	return False
+	
+def setAllBrightness(brightness):
+	for i in range(0, getNumberOfLights()):
+		setBrightness(i+1, brightness)
 
 # Returns True if color was set. False if the light was already off.
 def setHue(num, hue):
