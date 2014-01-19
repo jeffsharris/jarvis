@@ -1,9 +1,14 @@
+#! /usr/bin/python
+
 import json
 import requests
 import time
+import threading
 
 baseurl = 'http://10.1.10.45/api/newdeveloper/'
 maxHue = 65535
+threadInProgress = threading.Event()
+
 
 def applyStateToLight(num, state):
 	url = baseurl + 'lights/' + str(num) + '/state'
@@ -87,17 +92,22 @@ def toggleLights():
 	else:
 		setAllOn()
 
-		
-def loopAllOnLights():
-	increment = 1000
-	delay = 0.1
-	numLights = getNumberOfLights()
-	i = 0
-	running = True
+def toggleColorLoop():
+	if (threadInProgress.isSet()):
+		threadInProgress.clear()
+	else:
+		threadInProgress.set()
+		threading.Thread(target=loopColors).start()
 	
-	while running:
-		running = False
+def loopColors():
+	increment = 2000
+	delay = 0.1
+
+	i = 0
+	numLights = getNumberOfLights()
+	while threadInProgress.isSet():
 		for j in range (0, numLights):
-			running = running | setHue(j+1, (i + increment*j) % maxHue)
+			setHue(j+1, (i + increment*j) % maxHue)
 		i += increment
-		time.sleep(delay)
+		time.sleep(delay)	
+	

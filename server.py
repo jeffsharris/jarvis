@@ -3,7 +3,7 @@ import lightcontroller
 
 urls = (
 	'/', 'index',
-	'/loop', 'loop',
+	'/colorloop', 'colorloop',
 	'/alloff', 'alloff',
 	'/allon', 'allon',
 	'/toggle', 'toggle',
@@ -14,9 +14,9 @@ class index:
     def GET(self):
 		return "Hello, world!"
 		
-class loop:
+class colorloop:
 	def GET(self):
-		lightcontroller.loopAllOnLights()
+		lightcontroller.toggleColorLoop()
 		
 class alloff:
 	def GET(self):
