@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import json
+import random
 import requests
 import time
 import threading
@@ -99,18 +100,38 @@ def toggleLights():
 		setAllOn()
 
 def toggleColorLoop():
-	if (threadInProgress.isSet()):
-		threadInProgress.clear()
-	else:
-		threadInProgress.set()
-		threading.Thread(target=loopColors, args = (2000,0.1)).start()
+	toggleMode(loopColors, (2000,0.1))
+		
+def toggleColorStrobe():
+	toggleMode(colorStrobe, (0.05,))
 	
 def loopColors(increment, delay):
-	i = 0
+	i = getHue(1)
 	numLights = getNumberOfLights()
 	while threadInProgress.isSet():
 		for j in range (0, numLights):
 			setHue(j+1, (i + increment*j) % maxHue)
-		i += increment
-		time.sleep(delay)	
+		i = (i + increment) % maxHue
+		time.sleep(delay)
+		
+def colorStrobe(delay):
+	numLights = getNumberOfLights()
+	while threadInProgress.isSet():
+		for j in range (0, numLights):
+			if random.random() > 0.5:
+				setOn(j+1)
+				setHue(j+1, random.randint(0, maxHue))
+			else:
+				setOff(j+1)
+		time.sleep(delay)
+	setAllOn()
+	
+def toggleMode(modeFunction, arguments):
+	if (threadInProgress.isSet()):
+		threadInProgress.clear()
+	else:
+		threadInProgress.set()
+		threading.Thread(target=modeFunction, args=arguments).start()
+		
+	
 	

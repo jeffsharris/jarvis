@@ -5,6 +5,7 @@ import lightcontroller
 urls = (
 	'/', 'index',
 	'/colorloop', 'colorloop',
+	'/colorstrobe', 'colorstrobe',
 	'/alloff', 'alloff',
 	'/allon', 'allon',
 	'/toggle', 'toggle',
@@ -18,6 +19,10 @@ class index:
 class colorloop:
 	def GET(self):
 		lightcontroller.toggleColorLoop()
+		
+class colorstrobe:
+	def GET(self):
+		lightcontroller.toggleColorStrobe()
 		
 class alloff:
 	def GET(self):
