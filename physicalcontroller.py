@@ -25,4 +25,6 @@ def start():
 	shouldStop.clear()
 	threading.Thread(target=listenForButton, args=(7, lightcontroller.toggleColorLoop)).start()
 	threading.Thread(target=listenForButton, args=(8, lightcontroller.toggleLights)).start()
+	threading.Thread(target=listenForButton, args=(25, lightcontroller.toggleColorStrobe)).start()
 	
+start()
