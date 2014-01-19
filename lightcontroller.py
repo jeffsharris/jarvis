@@ -13,6 +13,9 @@ threadInProgress = threading.Event()
 def applyStateToLight(num, state):
 	url = baseurl + 'lights/' + str(num) + '/state'
 	r = requests.put(url, data=json.dumps(state));
+	
+def getHue(num):
+	return getStateProperty(num, 'hue')
 
 def getOnLights():
 	onLights = set()
@@ -22,15 +25,18 @@ def getOnLights():
 	return onLights
 
 def getOnState(num):
-	url = baseurl + 'lights/' + str(num)
-	r = requests.get(url)
-	state = json.loads(r.text)['state']
-	return state['on']
+	return getStateProperty(num, 'on')
 	
 def getNumberOfLights():
 	url = baseurl + 'lights'
 	r = requests.get(url)
 	return len(json.loads(r.text))
+	
+def getStateProperty(num, property):
+	url = baseurl + 'lights/' + str(num)
+	r = requests.get(url)
+	state = json.loads(r.text)['state']
+	return state[property]
 
 # Concurrency hack. Keep looping through the lights in case something else is touching them.
 def setAllOff():
@@ -97,12 +103,9 @@ def toggleColorLoop():
 		threadInProgress.clear()
 	else:
 		threadInProgress.set()
-		threading.Thread(target=loopColors).start()
+		threading.Thread(target=loopColors, args = (2000,0.1)).start()
 	
-def loopColors():
-	increment = 2000
-	delay = 0.1
-
+def loopColors(increment, delay):
 	i = 0
 	numLights = getNumberOfLights()
 	while threadInProgress.isSet():
