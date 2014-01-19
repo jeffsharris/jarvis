@@ -1,27 +1,27 @@
 #!/usr/bin/python
+import lightcontroller
 import RPi.GPIO as GPIO
 import time
-import lightcontroller
+import threading
 
-onOffPinNum = 8
-colorLoopPinNum = 7
-GPIO.setmode(GPIO.BCM)
+shouldStop = threading.Event()
+delay = 0.05
 
-
-GPIO.setup(onOffPinNum, GPIO.IN)
-GPIO.setup(colorLoopPinNum, GPIO.IN)
-prevOnOffInput = 0
-prevColorLoopInput = 0
-
-while True:
-    onOffInput = GPIO.input(onOffPinNum)
-    if ((not prevOnOffInput) and onOffInput):
-        lightcontroller.toggleLights()
-    prevOnOffInput = onOffInput
-
-    colorLoopInput = GPIO.input(colorLoopPinNum)
-    if ((not prevColorLoopInput) and colorLoopInput):
-        lightcontroller.toggleColorLoop()
-    prevColorLoopInput = colorLoopInput
-
-    time.sleep(0.05)
+def listenForButton(pinNumber, function): # Assumes high value indicates button is pressed
+	GPIO.setup(pinNumber, GPIO.IN)
+	prevValue = 0
+	while (not shouldStop.isSet()):
+		value = GPIO.input(pinNumber)
+		if((not prevValue) and value):
+			function()
+		prevValue = value
+		time.sleep(delay)
+		
+def stop():
+	shouldStop.set()
+	
+def start():
+	GPIO.setmode(GPIO.BCM)
+	threading.Thread(target=listenForButton, args=(7, lightcontroller.toggleColorLoop)).start()
+	threading.Thread(target=listenForButton, args=(8, lightcontroller.toggleLights)).start()
+	
