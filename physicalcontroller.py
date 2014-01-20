@@ -27,4 +27,5 @@ def start():
 	threading.Thread(target=listenForButton, args=(8, lightcontroller.toggleColorLoop)).start()
 	threading.Thread(target=listenForButton, args=(25, lightcontroller.toggleColorStrobe)).start()
 	
-start()
+if __name__ == "__main__":
+    start()
