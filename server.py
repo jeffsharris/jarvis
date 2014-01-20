@@ -40,6 +40,9 @@ class allbrightness:
 	def GET(self, name):
 		lightcontroller.setAllBrightness(int(name))
 
+def start():
+	app = web.application(urls, globals())
+	app.run()
+
 if __name__ == "__main__":
-    app = web.application(urls, globals())
-    app.run()
+    start()
