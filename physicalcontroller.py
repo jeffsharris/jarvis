@@ -23,9 +23,8 @@ def stop():
 def start():
 	GPIO.setmode(GPIO.BCM)
 	shouldStop.clear()
-	threading.Thread(target=listenForButton, args=(7, lightcontroller.toggleColorLoop)).start()
-	threading.Thread(target=listenForButton, args=(8, lightcontroller.toggleLights)).start()
+	threading.Thread(target=listenForButton, args=(7, lightcontroller.toggleLights)).start()
+	threading.Thread(target=listenForButton, args=(8, lightcontroller.toggleColorLoop)).start()
 	threading.Thread(target=listenForButton, args=(25, lightcontroller.toggleColorStrobe)).start()
 	
-if __name__ == "__main__":
-	start()
+start()
