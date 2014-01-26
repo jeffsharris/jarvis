@@ -11,11 +11,11 @@ SPIMISO = 9
 SPIMOSI = 10
 SPICS = 22
 
-class AnalogInput:
-	def __init__(self, analogPinNumber, normalizer, tolerance):
+class Potentiometer:
+	def __init__(self, analogPinNumber, maxValue, tolerance):
 		self.analogPinNumber = analogPinNumber
 		self.lastValue = 0
-		self.normalizer = normalizer
+		self.normalizer = 1024 / maxValue
 		self.tolerance = tolerance
 
 	def isNew(self):
@@ -47,15 +47,13 @@ def listenForAnalog():
 	GPIO.setup(SPICLK, GPIO.OUT)
 	GPIO.setup(SPICS, GPIO.OUT)
 
-	brightness = AnalogInput(0, 4.02, 10)
-	saturation = AnalogInput(1, 4.02, 10)
+	brightness = Potentiometer(0, 255, 10)
+	saturation = Potentiometer(1, 255, 10)
 
 	while (not shouldStop.isSet()):
 		if brightness.isNew():
-			print "Setting brightness to new value: " + str(brightness.getLastValue())
 			lightcontroller.setAllBrightness(brightness.getLastValue())
 		if saturation.isNew():
-			print "Setting saturation to new value: " + str(saturation.getLastValue())
 			lightcontroller.setAllSaturation(saturation.getLastValue())
 		time.sleep(delay)
 
