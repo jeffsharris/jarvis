@@ -75,6 +75,10 @@ def setHue(num, hue):
 		return True
 	return False
 	
+def setAllSaturation(saturation):
+	for i in range(0, getNumberOfLights()):
+		setSaturation(i+1, saturation)
+	
 def setSaturation(num, saturation):
 	if(getOnState(num)):
 		body = {"sat":saturation}
