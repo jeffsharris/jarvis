@@ -28,12 +28,12 @@ def switch_detected(state, sender, signal):
 	if (state == 1):
 		print "Switch detected"
 		lastMovedTime = time.time()
-	
 
-print "Waiting for events"
-while True:
-	env.wait(waitTime)
-	print "Switch state is: ", switch.basicevent.GetBinaryState()['BinaryState']
-	if (time.time() - lastMovedTime > timeoutTime) & (switch.basicevent.GetBinaryState()['BinaryState'] == "1"):
-		print "Turning switch off"
-		switch.basicevent.SetBinaryState(BinaryState=0)
+def start():
+	print "Waiting for events"
+	while True:
+		env.wait(waitTime)
+		print "Switch state is: ", switch.basicevent.GetBinaryState()['BinaryState']
+		if (time.time() - lastMovedTime > timeoutTime) & (switch.basicevent.GetBinaryState()['BinaryState'] == "1"):
+			print "Turning switch off"
+			switch.basicevent.SetBinaryState(BinaryState=0)
