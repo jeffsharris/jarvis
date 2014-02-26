@@ -8,6 +8,7 @@ timeoutTime = 1800 # Wait 30 minutes without motion before turning off the volca
 waitTime = 60 # Check if it has timed out every 60 seconds 
 	
 env = Environment()
+env.discover(seconds=3)
 env.start()
 
 switch = env.get_switch('Volcano')
@@ -29,7 +30,7 @@ def switch_detected(state, sender, signal):
 		print "Switch detected"
 		lastMovedTime = time.time()
 
-def start():
+if __name__ == "__main__":
 	print "Waiting for events"
 	while True:
 		env.wait(waitTime)
