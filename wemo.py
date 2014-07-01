@@ -16,7 +16,7 @@ def on_switch(switch):
 
 env = Environment(on_switch, on_motion)
 env.start()
-env.discover(seconds=3)
+env.discover(seconds=10)
 
 switch = env.get_switch('Volcano')
 motion = env.get_motion('Living Room')
